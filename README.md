@@ -9,7 +9,9 @@ Python Version = 3.x
 
 ## HOWTO
 1) Clone repo
+
 git clone https://github.com/flokinagee/python-packer-aws-gcp-azure-lambda.git
+
 cd python-packer-aws-gcp-azure-lambda
 
 2) create virtual env
@@ -36,17 +38,16 @@ build = Packer(exec_path="bin/packer", package="package/packer.zip", packer_temp
 
 
 #Verions - checking packer version
->>>build.version()
 
+build.version()
 Packer v1.7.10
 
 #Validate - Validate packer template before build ( templates will be in directory tempplates/)
->>> build.validate().output
 
+build.validate().output
 'The configuration is valid.\n'
 
->>build.build().output
-
+build.build().output
 '...1645183105,,ui,say,--> amazon-ebs: AMIs were created:\\nap-southeast-1: ami-0c0513e4027c8eeaa\\n"
 
 
@@ -55,11 +56,8 @@ Packer v1.7.10
 ## Testing
 
 pytest -
-
 or
-
 make test
-```
 
 ## Contributions..
 

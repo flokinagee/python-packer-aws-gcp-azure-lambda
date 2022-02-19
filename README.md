@@ -40,14 +40,17 @@ build = Packer(exec_path="bin/packer", package="package/packer.zip", packer_temp
 #Verions - checking packer version
 
 build.version()
+
 Packer v1.7.10
 
 #Validate - Validate packer template before build ( templates will be in directory tempplates/)
 
 build.validate().output
+
 'The configuration is valid.\n'
 
 build.build().output
+
 '...1645183105,,ui,say,--> amazon-ebs: AMIs were created:\\nap-southeast-1: ami-0c0513e4027c8eeaa\\n"
 
 
@@ -56,7 +59,9 @@ build.build().output
 ## Testing
 
 pytest -
+
 or
+
 make test
 
 ## Contributions..

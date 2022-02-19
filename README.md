@@ -57,7 +57,9 @@ build.build().output
 
 
 ##### Other method are in progress to such as fix, clean ###
-Packer baseclass reference from https://github.com/nir0s/python-packer
+Packer baseclass reference from https://github.com/nir0s/python-packer but converted from sh module to subprocess as sh module tries to open pty for ec2 connection which is restriced in AWS Lambda
+
+Code is in progress for GCP Azure
 
 
 ## Testing

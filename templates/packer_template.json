@@ -1,0 +1,34 @@
+{
+    "builders": [
+        {
+            "ami_name": "Amazon packer test",
+            "instance_type": "t2.micro",
+            "region": "ap-southeast-1",
+            "security_group_id":"sg-0bc4be67105e3d893",
+            "ssh_keypair_name":"packer",
+            "ssh_private_key_file":"packer.pem",
+            "associate_public_ip_address":"false",
+            "vpc_id": "vpc-0385632756756",
+            "subnet_id": "subnet-5482756",
+            "source_ami_filter": {
+              "filters": {
+              "virtualization-type": "hvm",
+              "name": "amzn2-ami-kernel-5.10-hvm-2.0.20220207.1-x86_64-gp2",
+              "root-device-type": "ebs"
+              },
+              "owners": ["137112412989"],
+              "most_recent": true
+            },
+            "ssh_username": "ec2-user",
+            "type": "amazon-ebs"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline":[
+                "echo HI"
+            ]
+        }
+    ]
+}

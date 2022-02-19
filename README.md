@@ -45,11 +45,11 @@ Packer v1.7.10
 
 #Validate - Validate packer template before build ( templates will be in directory tempplates/)
 
-#Build -  Build an AMI
-
 build.validate().output
 
 'The configuration is valid.\n'
+
+#Build -  Build an AMI
 
 build.build().output
 

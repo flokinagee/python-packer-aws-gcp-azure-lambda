@@ -1,189 +1,55 @@
-python-packer
+packer to run in lambda in multicloud (AWS GCP Azure) to automate AMI Creation for Immutable deloyment
 =============
 
-[![Build Status](https://travis-ci.org/nir0s/python-packer.svg?branch=master)](https://travis-ci.org/nir0s/python-packer)
-[![PyPI](http://img.shields.io/pypi/dm/python-packer.svg)](http://img.shields.io/pypi/dm/python-packer.svg)
-[![PypI](http://img.shields.io/pypi/v/python-packer.svg)](http://img.shields.io/pypi/v/python-packer.svg)
+
+Python3 Interface for cloudagnostic build [packer.io](http://www.packer.io)
+
+## Version
+Python Version = 3.x
+
+## HOWTO
+1) Clone repo
+git clone https://github.com/flokinagee/python-packer-aws-gcp-azure-lambda.git
+cd python-packer-aws-gcp-azure-lambda
+
+2) create virtual env
+python3 -m venv env
+source env/bin/activate
+
+3) install library
+pip install -r requirements.txt -t lib/
+
+4) Invoke main_handler for ami creation
+python3 main.py
+
+## Methods ###
+
+#Install
+
+Installation will be done during object instantion if exec_path file is not found. Package binary will be in directory pakages/packer.zip (download - https://www.packer.io/downloads )
+
+build = Packer(exec_path="bin/packer", package="package/packer.zip", packer_template_file="templates/packer_template.json")
 
 
-A Python interface for [packer.io](http://www.packer.io)
+#Verions - checking packer version
+>>>build.version()
+Packer v1.7.10
 
-## Packer version
+#Validate - Validate packer template before build ( templates will be in directory tempplates/)
+>>> build.validate().output
+'The configuration is valid.\n'
 
-The interface has been developed vs. Packer v0.7.5.
-
-
-## Installation
-
-You must have Packer installed prior to using this client though as installer class is provided to install packer for you.
-
-```shell
- pip install python-packer
-
- # or, for dev:
- pip install https://github.com/nir0s/python-packer/archive/master.tar.gz
-```
-
-## Usage Examples
-
-### [Packer.build()](https://www.packer.io/docs/command-line/build.html)
-
-```python
-import packer
-
-packerfile = 'packer/tests/resources/packerfile.json'
-exc = []
-only = ['my_first_image', 'my_second_image']
-vars = {"variable1": "value1", "variable2": "value2"}
-var_file = 'path/to/var/file'
-packer_exec_path = '/usr/bin/packer'
-
-p = packer.Packer(packerfile, exc=exc, only=only, vars=vars,
-                  var_file=var_file, exec_path=packer_exec_path)
-p.build(parallel=True, debug=False, force=False)
-```
+>>build.build().output
+'...1645183105,,ui,say,--> amazon-ebs: AMIs were created:\\nap-southeast-1: ami-0c0513e4027c8eeaa\\n"
 
 
-### [Packer.fix()](https://www.packer.io/docs/command-line/fix.html)
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-output_file = 'packer/tests/resources/packerfile_fixed.json'
-print(p.fix(output_file))
-```
-
-The `output_file` parameter will write the output of the `fix` function to a file.
-
-
-### [Packer.inspect()](https://www.packer.io/docs/command-line/inspect.html)
-
-A `-machine-readable` (mrf) argument is provided.
-
-If the `mrf` argument is set to `True`, the output will be parsed and an object containing the parsed output will be exposed as a dictionary containing the components:
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-result = p.inspect(mrf=True)
-print(result.parsed_output)
-# print(result.stdout) can also be used here
-
-# output:
-"variables": [
-  {
-    "name": "aws_access_key",
-    "value": "{{env `AWS_ACCESS_KEY_ID`}}"
-  },
-  {
-    "name": "aws_secret_key",
-    "value": "{{env `AWS_ACCESS_KEY`}}"
-  }
-],
-"provisioners": [
-  {
-    "type": "shell"
-  }
-],
-"builders": [
-  {
-    "type": "amazon-ebs",
-    "name": "amazon"
-  }
-]
-```
-
-If the `mrf` argument is set to `False`, the output will not be parsed but rather returned as is:
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-result = p.inspect(mrf=True)
-print(result.stdout)
-
-# output:
-Optional variables and their defaults:
-
-  aws_access_key          = {{env `AWS_ACCESS_KEY_ID`}}
-  aws_secret_key          = {{env `AWS_ACCESS_KEY`}}
-
-Builders:
-
-  amazon                   (amazon-ebs)
-
-Provisioners:
-
-  shell
-
-...
-
-```
-
-
-### [Packer.push()](https://www.packer.io/docs/command-line/push.html)
-
-You must be logged into Atlas to use the `push` function:
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-atlas_token = 'oi21mok3mwqtk31om51o2joj213m1oo1i23n1o2'
-p.push(create=True, token=atlas_token)
-```
-
-### [Packer.validate()](https://www.packer.io/docs/command-line/validate.html)
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-p.validate(syntax_only=False)
-```
-
-### Packer.version()
-
-```python
-...
-
-p = packer.Packer(packerfile, ...)
-print(p.version())
-```
-
-### PackerInstaller.install()
-
-This installs packer to `packer_path` using the `installer_path` and verifies that the installation was successful.
-
-```python
-
-packer_path = '/usr/bin/'
-installer_path = 'Downloads/packer_0.7.5_linux_amd64.zip'
-
-p = packer.Installer(packer_path, installer_path)
-p.install()
-```
-
-## Shell Interaction
-
-The [sh](http://amoffat.github.io/sh/) Python module is used to execute Packer.
-As such, return values from all functional methods (`validate`, `build`, etc..) other than the `version` method
-will return an `sh` execution object. This is meant for you to be able to read stdout, stderr, exit codes and more after executing the commands. With the progression of `python-packer` less abstract objects will return and more concise return values will be provided.
-
-Additionally, to verify that all errors return with as much info as possible, error handling is done gently. Most errors will raise an `sh` exception so that you're able to interact with them. Again, as this module progresses, these exceptions will be handled properly.
 
 
 ## Testing
 
-Please contribute. Currently tests are not really developed.
-
-```shell
-git clone git@github.com:nir0s/python-packer.git
-cd python-packer
-pip install tox
-tox
+pytest -v
+or
+make test
 ```
 
 ## Contributions..

@@ -32,7 +32,7 @@ python3 main.py
 
 #Install
 
-Installation will be done during object instantion if exec_path file is not found. Package binary will be in directory pakages/packer.zip (download - https://www.packer.io/downloads )
+Installation will be done during object instantiation if exec_path file is not found. Package binary will be in directory pakages/packer.zip (download - https://www.packer.io/downloads )
 
 build = Packer(exec_path="bin/packer", package="package/packer.zip", packer_template_file="templates/packer_template.json")
 
@@ -54,11 +54,17 @@ build.build().output
 '...1645183105,,ui,say,--> amazon-ebs: AMIs were created:\\nap-southeast-1: ami-0c0513e4027c8eeaa\\n"
 
 
+##### Other method are in progress to such as fix, clean ###
+Packer baseclass reference from https://github.com/nir0s/python-packer
 
 
 ## Testing
 
-pytest -
+pytest -v
+
+or
+
+python test_packer.py
 
 or
 

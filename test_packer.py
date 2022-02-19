@@ -13,7 +13,8 @@ class BuildTest(unittest.TestCase):
     event = {
         "packer_template_file" : "templates/packer_template.json",
         "packer_binary": "bin/packer",
-        "shared_accounts": [ "12345678923"]
+        "shared_accounts": [ "12345678923"],
+        "package" : "package/packer.zip"
         }
 
     build_ami_output = "AMIs were created:\\nap-southeast-1: ami-123456789dsfs\\n"

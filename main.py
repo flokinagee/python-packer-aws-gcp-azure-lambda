@@ -17,7 +17,7 @@ def lambda_handler(event, context):
 event = {
     "packer_template_file" : "templates/packer_template.json",
     "packer_binary": "bin/packer",
-    "shared_accounts": [ "885231250983"],
+    "shared_accounts": [ "12345678923"],
     "package": "package/packer.zip"
 
 }
